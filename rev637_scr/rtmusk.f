@@ -262,37 +262,39 @@
 !! channel storage and from volume flowing out
 
        !! calculate transmission losses
-	  rttlc = 0.
-
-	  if (rtwtr > 0.) then
-
-	!!  Total time in hours to clear the water
-
-      rttlc = det * ch_k(2,jrch) * ch_l2(jrch) * p
-	  rttlc2 = rttlc * rchstor(jrch) / (rtwtr + rchstor(jrch))
-
-	    if (rchstor(jrch) <= rttlc2) then
-	      rttlc2 = min(rttlc2, rchstor(jrch))
-	      rchstor(jrch) = rchstor(jrch) - rttlc2
-	      rttlc1 = rttlc - rttlc2
-	      if (rtwtr <= rttlc1) then
-	        rttlc1 = min(rttlc1, rtwtr)
-	        rtwtr = rtwtr - rttlc1
-	      else
-	        rtwtr = rtwtr - rttlc1
-	      end if
-	    else
-	      rchstor(jrch) = rchstor(jrch) - rttlc2
-	      rttlc1 = rttlc - rttlc2
-	      if (rtwtr <= rttlc1) then
-	        rttlc1 = min(rttlc1, rtwtr)
-	        rtwtr = rtwtr - rttlc1
-	      else
-	        rtwtr = rtwtr - rttlc1
-	      end if
-	    end if
-	  rttlc = rttlc1 + rttlc2
-        end if
+      !! OGX: streambed leakage
+      call sw2gw(jrch)
+	!  rttlc = 0.
+ !
+	!  if (rtwtr > 0.) then
+ !
+	!!!  Total time in hours to clear the water
+ !
+ !     rttlc = det * ch_k(2,jrch) * ch_l2(jrch) * p
+	!  rttlc2 = rttlc * rchstor(jrch) / (rtwtr + rchstor(jrch))
+ !
+	!    if (rchstor(jrch) <= rttlc2) then
+	!      rttlc2 = min(rttlc2, rchstor(jrch))
+	!      rchstor(jrch) = rchstor(jrch) - rttlc2
+	!      rttlc1 = rttlc - rttlc2
+	!      if (rtwtr <= rttlc1) then
+	!        rttlc1 = min(rttlc1, rtwtr)
+	!        rtwtr = rtwtr - rttlc1
+	!      else
+	!        rtwtr = rtwtr - rttlc1
+	!      end if
+	!    else
+	!      rchstor(jrch) = rchstor(jrch) - rttlc2
+	!      rttlc1 = rttlc - rttlc2
+	!      if (rtwtr <= rttlc1) then
+	!        rttlc1 = min(rttlc1, rtwtr)
+	!        rtwtr = rtwtr - rttlc1
+	!      else
+	!        rtwtr = rtwtr - rttlc1
+	!      end if
+	!    end if
+	!  rttlc = rttlc1 + rttlc2
+ !       end if
 
 
         !! calculate evaporation

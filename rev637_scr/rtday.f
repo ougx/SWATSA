@@ -1,7 +1,7 @@
       subroutine rtday
 
 !!    ~ ~ ~ PURPOSE ~ ~ ~
-!!    this subroutine routes the daily flow through the reach using a 
+!!    this subroutine routes the daily flow through the reach using a
 !!    variable storage coefficient
 
 !!    ~ ~ ~ INCOMING VARIABLES ~ ~ ~
@@ -53,7 +53,7 @@
 !!    jrch        |none          |reach number
 !!    p           |m             |wetted perimeter
 !!    rh          |m             |hydraulic radius
-!!    scoef       |none          |Storage coefficient (fraction of water in 
+!!    scoef       |none          |Storage coefficient (fraction of water in
 !!                               |reach flowing out on day)
 !!    topw        |m             |top width of main channel
 !!    vol         |m^3 H2O       |volume of water in reach at beginning of
@@ -151,7 +151,7 @@
 
       if (sdti > 0.) then
         !! calculate velocity and travel time
-  	    vc = sdti / rcharea  
+  	    vc = sdti / rcharea
         vel_chan(jrch) = vc
 	  rttime = ch_l2(jrch) * 1000. / (3600. * vc)
 
@@ -169,41 +169,48 @@
 !! Add if statement to keep rchstor from becoming negative
       if (rchstor(jrch) < 0.0) rchstor(jrch) = 0.0
 
-!! transmission and evaporation losses are proportionally taken from the 
+!! transmission and evaporation losses are proportionally taken from the
 !! channel storage and from volume flowing out
 
        !! calculate transmission losses
-	  rttlc = 0.
 
-	  if (rtwtr > 0.) then
+      do j = hru1(jrch), hru1(jrch) + hrutot(jrch) - 1
+        deepst(j) = deepst(j) + subwtr
+      end do
 
-	!!  Total time in hours to clear the water
-
-          rttlc = det * ch_k(2,jrch) * ch_l2(jrch) * p
-          rttlc2 = rttlc * rchstor(jrch) / (rtwtr + rchstor(jrch))
-
-	    if (rchstor(jrch) <= rttlc2) then
-	      rttlc2 = min(rttlc2, rchstor(jrch))
-	      rchstor(jrch) = rchstor(jrch) - rttlc2
-	      rttlc1 = rttlc - rttlc2
-	      if (rtwtr <= rttlc1) then
-	        rttlc1 = min(rttlc1, rtwtr)
-	        rtwtr = rtwtr - rttlc1
-	      else
-	        rtwtr = rtwtr - rttlc1
-	      end if
-	    else
-	      rchstor(jrch) = rchstor(jrch) - rttlc2
-	      rttlc1 = rttlc - rttlc2
-	      if (rtwtr <= rttlc1) then
-	        rttlc1 = min(rttlc1, rtwtr)
-	        rtwtr = rtwtr - rttlc1
-	      else
-	        rtwtr = rtwtr - rttlc1
-	      end if
-	    end if
-	  rttlc = rttlc1 + rttlc2
-        end if
+      !! OGX: streambed leakage
+      call sw2gw(jrch)
+	!  rttlc = 0.
+ !
+	!  if (rtwtr > 0.) then
+ !
+	!!!  Total time in hours to clear the water
+ !
+ !         rttlc = det * ch_k(2,jrch) * ch_l2(jrch) * p
+ !         rttlc2 = rttlc * rchstor(jrch) / (rtwtr + rchstor(jrch))
+ !
+	!    if (rchstor(jrch) <= rttlc2) then
+	!      rttlc2 = min(rttlc2, rchstor(jrch))
+	!      rchstor(jrch) = rchstor(jrch) - rttlc2
+	!      rttlc1 = rttlc - rttlc2
+	!      if (rtwtr <= rttlc1) then
+	!        rttlc1 = min(rttlc1, rtwtr)
+	!        rtwtr = rtwtr - rttlc1
+	!      else
+	!        rtwtr = rtwtr - rttlc1
+	!      end if
+	!    else
+	!      rchstor(jrch) = rchstor(jrch) - rttlc2
+	!      rttlc1 = rttlc - rttlc2
+	!      if (rtwtr <= rttlc1) then
+	!        rttlc1 = min(rttlc1, rtwtr)
+	!        rtwtr = rtwtr - rttlc1
+	!      else
+	!        rtwtr = rtwtr - rttlc1
+	!      end if
+	!    end if
+	!  rttlc = rttlc1 + rttlc2
+ !       end if
 
 
         !! calculate evaporation
@@ -218,9 +225,9 @@
 		  if (aaa <=  (rchdep - ch_d(jrch))) then
               rtevp = aaa * ch_l2(jrch) * 1000. * topw
 	      else
-	        rtevp = (rchdep - ch_d(jrch)) 
-	        rtevp = rtevp + (aaa - (rchdep - ch_d(jrch))) 
-              topw = phi(6,jrch) + 2. * ch_d(jrch) * c           
+	        rtevp = (rchdep - ch_d(jrch))
+	        rtevp = rtevp + (aaa - (rchdep - ch_d(jrch)))
+              topw = phi(6,jrch) + 2. * ch_d(jrch) * c
 	        rtevp = rtevp * ch_l2(jrch) * 1000. * topw
 	      end if
 	    end if
@@ -259,7 +266,7 @@
         flwout(jrch) = 0.
       end if
 
-!! precipitation on reach is not calculated because area of HRUs 
+!! precipitation on reach is not calculated because area of HRUs
 !! in subbasin sums up to entire subbasin area (including channel
 !! area) so precipitation is accounted for in subbasin loop
 

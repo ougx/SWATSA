@@ -1,10 +1,10 @@
        subroutine route
-      
+
 !!    ~ ~ ~ PURPOSE ~ ~ ~
-!!    this subroutine simulates channel routing     
+!!    this subroutine simulates channel routing
 
 !!    ~ ~ ~ INCOMING VARIABLES ~ ~ ~
-!!    name        |units         |definition  
+!!    name        |units         |definition
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !!    alpha_bnke(:)|none         |Exp(-alpha_bnk(:))
 !!    bankst(:)   |m^3 H2O       |bank storage
@@ -36,7 +36,7 @@
 !!    nhru        |none          |number of HRUs in watershed
 !!    pet_day     |mm H2O        |potential evapotranspiration on day
 !!    rchdep      |m             |depth of flow on day
-!!    rnum1       |none          |fraction of overland flow 
+!!    rnum1       |none          |fraction of overland flow
 !!    rttlc       |m^3 H2O       |transmission losses from reach on day
 !!    rtwtr       |m^3 H2O       |water leaving reach on day
 !!    shallst(:)  |mm H2O        |depth of water in shallow aquifer
@@ -112,17 +112,17 @@
       end if
 
 !! add transmission losses to bank storage/deep aquifer in subbasin
+!!   OGX: comment to disable
+!      if (rttlc > 0.) then
+!        bankst(jrch) = bankst(jrch) + rttlc * (1. - trnsrch)
+!        if (da_ha > 1.e-9) then
+!          subwtr = rttlc * trnsrch / (da_ha * sub_fr(jrch) * 10.)
+!          do j = hru1(jrch), hru1(jrch) + hrutot(jrch) - 1
+!            deepst(j) = deepst(j) + subwtr
+!          end do
+!	  end if
+!      end if
 
-      if (rttlc > 0.) then
-        bankst(jrch) = bankst(jrch) + rttlc * (1. - trnsrch)
-        if (da_ha > 1.e-9) then 
-          subwtr = rttlc * trnsrch / (da_ha * sub_fr(jrch) * 10.)
-          do j = hru1(jrch), hru1(jrch) + hrutot(jrch) - 1
-            deepst(j) = deepst(j) + subwtr
-          end do
-	  end if
-      end if
- 
 !! compute revap from bank storage
       revapday = ch_revap(jrch) * pet_day * ch_l2(jrch) * ch_w(2,jrch)
       revapday = Min(revapday,bankst(jrch))
@@ -196,7 +196,7 @@
             if (ch_eqn(jrch) == 4) call rtsed_yangsand
           else
             call rthsed
-            end if      
+            end if
         end if
 
 !! perform in-stream nutrient calculations
@@ -211,7 +211,7 @@
 
 !! perform in-stream pesticide calculations
 !!      call biofilm
-      
+
 !! perform in-stream pesticide calculations
       if (ievent == 0) then
         call rtpest

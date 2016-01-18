@@ -1,7 +1,7 @@
       subroutine zero1
 
 !!    ~ ~ ~ PURPOSE ~ ~ ~
-!!    this subroutine initializes the values for some of the arrays 
+!!    this subroutine initializes the values for some of the arrays
 
       use parm
 
@@ -36,15 +36,15 @@
       sol_HS = 0.
       sol_BM = 0.
 !!    added by zhang for CSWAT == 2
-      
+
 
 
 !!  septic changes 6/07/10  jaehak
       bio_amn = 0.
       bio_bod = 0.
-      fcoli = 0.  
+      fcoli = 0.
       bio_ntr = 0.
-      bio_fecal = 0.  
+      bio_fecal = 0.
       bio_ntr = 0.
       biom = 0.
       rbiom = 0.
@@ -97,10 +97,10 @@
       sep_strm_dist = 0
       sep_den = 0
 !!  septic changes 6/07/10  jaehak
-     
+
       cont_cn = 0.
       cont_p = 0.
-      dep_chan = 0.
+      !dep_chan = 0.  !! OGX: skip this for streambed leakage
       drain_d = 0.
       drain_t = 0.
       drain_g = 0.
@@ -116,7 +116,7 @@
       gwati = 0.
       gwatn = 0.
       gwatl = 0.
-      gwatw = 0. 
+      gwatw = 0.
       gwatd = 0.
       gwatveg = 0.
       harg_petco = 0.       ! CB 8/24/09
@@ -170,7 +170,7 @@
       phu_op = 0.
       phutot = 0.
       plaps = 0.
-!!  septic changes 1/29/09 
+!!  septic changes 1/29/09
       plqm = 0.
       plq_rt = 0.
 !!  septic changes 1/29/09
@@ -235,7 +235,7 @@
 !!  septic changes 1/29/09
       rsp_rt = 0.
       slg_rt = 0.
-!!  septic changes 1/29/09 
+!!  septic changes 1/29/09
       sol_rock = 0.
       rs1 = 0.
       rs2 = 0.
@@ -362,7 +362,7 @@
       usle_p = 0.
       vel_chan = 0.
 !!  septic changes 1/29/09
-      vp = 0. 
+      vp = 0.
 !!  septic changes 1/29/09
       vfsi = 0.    !CB 8/24/09
       vpd2 = 0.

@@ -102,12 +102,22 @@
       gwht(j) = Max(1.e-6, gwht(j))
 
 !! compute groundwater contribution to streamflow for day
-      if (shallst(j) > gwqmn(j)) then
-        gw_q(j) = gw_q(j) * alpha_bfe(j) + (rchrg(j) - gwseep ) *
-     &                                               (1. - alpha_bfe(j))
-      else
-        gw_q(j) = 0.
-      end if
+!! original SWAT code
+!      if (shallst(j) > gwqmn(j)) then
+!        gw_q(j) = gw_q(j) * alpha_bfe(j) + (rchrg(j) - gwseep ) *
+!     &                                               (1. - alpha_bfe(j))
+!      else
+!        gw_q(j) = 0.
+!      end if
+
+
+!!---------------------- OGX ----------------------!!
+!! modify the groundwater component to account for losing streams
+      call gw2sw(j)
+
+
+!!---------------------- OGX ----------------------!!
+
 
 !! compute revap to soil profile/plant roots
       revapday = gw_revap(j) * pet_day
@@ -122,15 +132,15 @@
       end if
 
 !! remove ground water flow from shallow aquifer storage
-      if (shallst(j) >= gwqmn(j)) then
-        shallst(j) = shallst(j) - gw_q(j)
-        if (shallst(j) < gwqmn(j)) then
-          gw_q(j) = shallst(j) + gw_q(j) - gwqmn(j)
-          shallst(j) = gwqmn(j)
-        end if
-       else
-        gw_q(j) = 0.
-      end if
+!      if (shallst(j) >= gwqmn(j)) then
+!        shallst(j) = shallst(j) - gw_q(j)
+!        if (shallst(j) < gwqmn(j)) then
+!          gw_q(j) = shallst(j) + gw_q(j) - gwqmn(j)
+!          shallst(j) = gwqmn(j)
+!        end if
+!       else
+!        gw_q(j) = 0.
+!      end if
 
       return
       end
